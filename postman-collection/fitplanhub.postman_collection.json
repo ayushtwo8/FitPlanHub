@@ -1,0 +1,359 @@
+{
+  "info": {
+    "name": "FitPlanHub API",
+    "description": "Complete API collection for FitPlanHub - Trainers & Users Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Signup - User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@test.com\",\n  \"password\": \"Test123!\",\n  \"name\": \"Jane User\",\n  \"role\": \"user\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "Signup - Trainer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"trainer@test.com\",\n  \"password\": \"Test123!\",\n  \"name\": \"John Trainer\",\n  \"role\": \"trainer\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"trainer@test.com\",\n  \"password\": \"Test123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Plans",
+      "item": [
+        {
+          "name": "Get All Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/plans",
+              "host": ["{{base_url}}"],
+              "path": ["plans"]
+            }
+          }
+        },
+        {
+          "name": "Get Plan by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/plans/:id",
+              "host": ["{{base_url}}"],
+              "path": ["plans", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "PLAN_ID_HERE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Plan (Trainer Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fat Loss Beginner Plan\",\n  \"description\": \"A comprehensive 30-day fat loss plan for beginners\",\n  \"price\": 999,\n  \"duration\": 30,\n  \"workoutDetails\": {\n    \"type\": \"Fat Loss\",\n    \"level\": \"Beginner\",\n    \"weeks\": 4,\n    \"days\": [\n      {\n        \"day\": 1,\n        \"name\": \"Cardio & Core\",\n        \"exercises\": [\n          {\"name\": \"Jumping Jacks\", \"sets\": 3, \"reps\": 20},\n          {\"name\": \"Plank\", \"sets\": 3, \"duration\": \"30 seconds\"},\n          {\"name\": \"Mountain Climbers\", \"sets\": 3, \"reps\": 15}\n        ]\n      },\n      {\n        \"day\": 2,\n        \"name\": \"Rest Day\",\n        \"exercises\": []\n      },\n      {\n        \"day\": 3,\n        \"name\": \"Full Body\",\n        \"exercises\": [\n          {\"name\": \"Squats\", \"sets\": 3, \"reps\": 15},\n          {\"name\": \"Push-ups\", \"sets\": 3, \"reps\": 10},\n          {\"name\": \"Lunges\", \"sets\": 3, \"reps\": 12}\n        ]\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/plans",
+              "host": ["{{base_url}}"],
+              "path": ["plans"]
+            }
+          }
+        },
+        {
+          "name": "Update Plan (Trainer Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fat Loss Advanced Plan\",\n  \"price\": 1499\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/plans/:id",
+              "host": ["{{base_url}}"],
+              "path": ["plans", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "PLAN_ID_HERE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Plan (Trainer Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/plans/:id",
+              "host": ["{{base_url}}"],
+              "path": ["plans", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "PLAN_ID_HERE"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Subscribe to Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"planId\": \"PLAN_ID_HERE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/subscriptions/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "subscribe"]
+            }
+          }
+        },
+        {
+          "name": "Get My Subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/subscriptions/my-subscriptions",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "my-subscriptions"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trainers",
+      "item": [
+        {
+          "name": "Get All Trainers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trainers",
+              "host": ["{{base_url}}"],
+              "path": ["trainers"]
+            }
+          }
+        },
+        {
+          "name": "Get Trainer by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trainers/:id",
+              "host": ["{{base_url}}"],
+              "path": ["trainers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "TRAINER_ID_HERE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Follow Trainer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trainers/:id/follow",
+              "host": ["{{base_url}}"],
+              "path": ["trainers", ":id", "follow"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "TRAINER_ID_HERE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Unfollow Trainer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trainers/:id/unfollow",
+              "host": ["{{base_url}}"],
+              "path": ["trainers", ":id", "unfollow"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "TRAINER_ID_HERE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Following Trainers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trainers/following",
+              "host": ["{{base_url}}"],
+              "path": ["trainers", "following"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feed",
+      "item": [
+        {
+          "name": "Get Personalized Feed",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/feed",
+              "host": ["{{base_url}}"],
+              "path": ["feed"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
