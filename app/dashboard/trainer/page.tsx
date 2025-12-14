@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "@/components/navbar";
 import PlanForm from "@/components/planform";
 import { Button } from "@/components/ui/button";
@@ -37,8 +39,9 @@ export default function TrainerDashboard() {
     try {
       const { data } = await api.get("/plans");
       const myPlans = data.plans.filter(
-        (p: Plan) => p.trainer?.id === user?.id
+        (p: Plan) => p.trainer?.id === user?._id
       );
+
       setPlans(myPlans);
     } catch (error) {
       console.error("Failed to fetch plans:", error);
@@ -137,8 +140,8 @@ export default function TrainerDashboard() {
               <Card>
                 <CardContent className="py-12 text-center">
                   <p className="text-muted-foreground">
-                    You haven&apos;t created any plans yet. Click "Create New
-                    Plan" to get started.
+                    You haven&apos;t created any plans yet. Click &quot;Create
+                    New Plan&quot; to get started.
                   </p>
                 </CardContent>
               </Card>

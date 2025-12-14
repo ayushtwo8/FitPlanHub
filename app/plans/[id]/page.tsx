@@ -1,8 +1,9 @@
+"use client"
+
 import Navbar from "@/components/navbar";
 import api from "@/lib/api";
 import { Plan } from "@/types";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, DollarSign, Lock, User } from "lucide-react";

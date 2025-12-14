@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = async () => {
     try {
-      const { data } = await api.get("auth/me");
+      const { data } = await api.get("/auth/me");
       setUser(data.user);
     } catch (error) {
       setUser(null);

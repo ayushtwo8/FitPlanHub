@@ -20,6 +20,7 @@ export default function Navbar() {
               <span className="text-sm text-muted-foreground">
                 {user.name} ({user.role})
               </span>
+              <Link href="/trainers">Trainers</Link>
               <Link
                 href={
                   user.role === "trainer"

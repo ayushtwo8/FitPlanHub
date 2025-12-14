@@ -9,33 +9,41 @@ export const getAllTrainers = async (
   res: Response
 ): Promise<void> => {
   try {
-    const trainers = await User.find({ role: "trainer" }).select("-password");
+    const trainers = await User.find({ role: "trainer" })
+      .select("-password")
+      .lean();
 
-    const trainersWithStats = await Promise.all(
-      trainers.map(async (trainer) => {
-        const planCount = await Plan.countDocuments({
-          trainerId: trainer._id.toString(),
-        });
+    const trainerIds = trainers.map((t) => t._id.toString());
 
-        let isFollowing = false;
-        if (req.user) {
-          const follow = await Follow.findOne({
-            userId: req.user.userId,
-            trainerId: trainer._id.toString(),
-          });
-          isFollowing = !!follow;
-        }
+    const planCounts = await Plan.aggregate([
+      { $match: { trainerId: { $in: trainerIds } } },
+      { $group: { _id: "$trainerId", count: { $sum: 1 } } },
+    ]);
 
-        return {
-          id: trainer._id,
-          name: trainer.name,
-          email: trainer.email,
-          planCount,
-          isFollowing,
-        };
-        res.json({ trainers: trainersWithStats });
-      })
-    );
+    const planCountMap = new Map(planCounts.map((pc) => [pc._id, pc.count]));
+
+    let followingSet = new Set<string>();
+    if (req.user) {
+      const follows = await Follow.find({
+        userId: req.user.userId,
+        trainerId: { $in: trainerIds },
+      }).select("trainerId");
+
+      followingSet = new Set(follows.map((f) => f.trainerId));
+    }
+
+    const trainersWithStats = trainers.map((trainer) => {
+      const trainerId = trainer._id.toString();
+      return {
+        id: trainer._id,
+        name: trainer.name,
+        email: trainer.email,
+        planCount: planCountMap.get(trainerId) || 0,
+        isFollowing: followingSet.has(trainerId),
+      };
+    });
+
+    res.json({ trainers: trainersWithStats });
   } catch (error) {
     console.error("Get trainers error:", error);
     res.status(500).json({ error: "Failed to fetch trainers" });
